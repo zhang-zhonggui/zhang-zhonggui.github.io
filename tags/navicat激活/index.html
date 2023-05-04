@@ -3,7 +3,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
-        <title>艾天科技面试 | 张中贵的博客</title>
+        <title>Tags: navicat激活 | 张中贵的博客</title>
         <meta name="author" content="zzg" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -27,10 +27,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -143,79 +139,127 @@
 
             <transition name="into">
             <div id="main" v-show="!loading">
-                <div class="article">
-    <div>
-        <h1>艾天科技面试</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/4/16
+                <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        <span>
+            <a href="/tags/MySQL/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                MySQL
+            </a>
         </span>
         
-        <span class="category">
-            <a href="/categories/%E9%9D%A2%E8%AF%95/">
+        
+        
+        <span>
+            <a href="/tags/spring/" style="background: #00bcd4">
                 <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                spring
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Redis/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Redis
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E9%9D%A2%E8%AF%95/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
                 </span>
                 面试
             </a>
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/%E9%9D%A2%E8%AF%95/" style="color: #00bcd4">面试</a>
-            </span>
-            
+        
+        <span>
+            <a href="/tags/spring-cloud/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                spring-cloud
+            </a>
         </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                云服务器
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/navicat%E6%BF%80%E6%B4%BB/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                navicat激活
+            </a>
+        </span>
+        
+        
+        
         
     </div>
     
-    <div class="content" v-pre>
-        <h1 id="艾天科技面试"><a href="#艾天科技面试" class="headerlink" title="艾天科技面试"></a>艾天科技面试</h1><span id="more"></span>
-
-<h2 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h2><p>先去一个房间笔试，在去另一个房间进行面试。最后让人回家等通知，走到一半的时候让我回来，进行复试。</p>
-<h5 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1.笔试"></a>1.笔试</h5><p>笔试的内容基本上很简单，几道js的问题已经一些Java基础问题，不算太难，最后的几道大题，使用的是二分查找也不是很难。大体上都很简单。影响比较深的几道题是</p>
-<ol>
-<li>map中有序的map是谁 我选的是 LinkedHashMap。答案是TreeMap</li>
-</ol>
-<p>总结：我选的没错，出题有问题，他们都是有序的hashmap</p>
-<pre><code>    * LinkedHashMap不仅维护着一个hash表，而且还维护着一个双向链表，而这个双向链表里的元素就是有序的。
-    * TreeMap也是一个有序的Map集合，其底层是一颗红黑树，该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。
-</code></pre>
-<h5 id="2-面试"><a href="#2-面试" class="headerlink" title="2.面试"></a>2.面试</h5><p> 面试基本上就是一塌糊涂，问的问题几乎我全都不会，MySQL的基础我还是得加强训练</p>
-<ol>
-<li>共有50个学生怎么使用limit取2~5号学生的信息：</li>
-</ol>
-<pre><code class="sql">SELECT * FROM `student` LIMIT 1,4
-</code></pre>
-<p>注意 ：<strong>相当于 limit M offset N , 从第 N 条记录开始, 返回 M 条记录</strong></p>
-<ol start="2">
-<li><p>计算每个学生的总成绩</p>
-<pre><code class="sql">SELECT SUM(student.grades) &quot;成绩&quot; FROM student GROUP BY student.`name`
-</code></pre>
-</li>
-<li><p>left join原理</p>
-<p><strong>LEFT JOIN 关键字从左表（table1）返回所有的行，即使右表（table2）中没有匹配。如果右表中没有匹配，则结果为 NULL。</strong></p>
-</li>
-</ol>
-<h5 id="3-总结"><a href="#3-总结" class="headerlink" title="3.总结"></a>3.总结</h5><p> 感觉自己挺蠢的这么简单的题都不会，MySQL的SQL书写还需要继续的加强，以后少用MybatisPlus，加强自身对与SQL的书写。</p>
-
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2023/5/4</div>
+            <a href="/2023/05/04/navicat%E6%BF%80%E6%B4%BB/">
+                <h3>navicat激活</h3>
+            </a>
+            <div class="info">
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/navicat%E6%BF%80%E6%B4%BB/" style="color: #00a596">navicat激活</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    
-    
-    
-    
-    
     
 </div>
 
@@ -248,12 +292,6 @@
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-
-
-
-
         
     </body>
 </html>
