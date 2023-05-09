@@ -183,299 +183,7 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h1 id="mybatis批量插入"><a href="#mybatis批量插入" class="headerlink" title="mybatis批量插入"></a>mybatis批量插入</h1><h2 id="1-使用Mybatis对MySQL的批量插入数据"><a href="#1-使用Mybatis对MySQL的批量插入数据" class="headerlink" title="1.使用Mybatis对MySQL的批量插入数据"></a>1.使用Mybatis对MySQL的批量插入数据</h2><ol>
-<li>准备工作创建数据库</li>
-</ol>
-<pre><code class="sql">CREATE TABLE `students` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `age` int NOT NULL,
-  `gender` enum(&#39;男性&#39;,&#39;女性&#39;) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-</code></pre>
-<ol start="2">
-<li><p>maven导入jar</p>
-<pre><code class="xml">   &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;mysql&lt;/groupId&gt;
-            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.baomidou&lt;/groupId&gt;
-            &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;3.5.3.1&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre>
-</li>
-</ol>
-<p>3.配置文件</p>
-<pre><code class="yaml">spring:
-  datasource:
-    url: jdbc:mysql://data.com:3306/data
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-</code></pre>
-<h2 id="2-对MySQL经行数据插入"><a href="#2-对MySQL经行数据插入" class="headerlink" title="2.对MySQL经行数据插入"></a>2.对MySQL经行数据插入</h2><h3 id="2-1-一条一条的插入"><a href="#2-1-一条一条的插入" class="headerlink" title="2.1 一条一条的插入"></a>2.1 一条一条的插入</h3><p>1.Service</p>
-<pre><code class="java">@Service
-public class UserService &#123;
- 
-    @Resource
-    private UserMapper userMapper;
- 
-    public void InsertUsers()&#123;
-        long start = System.currentTimeMillis();
-        for(int i = 0 ;i &lt; 10000; i++) &#123;
-            User user = new User();
-            user.setUsername(&quot;name&quot; + i);
-            user.setPassword(&quot;password&quot; + i);
-            userMapper.insertUsers(user);
-        &#125;
-        long end = System.currentTimeMillis();
-        System.out.println(end-start + &quot;ms&quot; );
-    &#125;
-
-&#125;
-</code></pre>
-<p>2.mapper</p>
-<pre><code class="java">@Mapper
-public interface UserMapper &#123;
-    Integer insertUsers(User user);
-&#125;
-</code></pre>
-<p>3.xml文件</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;mapper namespace=&quot;com.example.demo.mapper.StudentsMapper&quot;&gt;
-  &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.example.demo.domain.Students&quot;&gt;
-    &lt;!--@mbg.generated--&gt;
-    &lt;!--@Table students--&gt;
-    &lt;id column=&quot;id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;id&quot; /&gt;
-    &lt;result column=&quot;name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;
-    &lt;result column=&quot;age&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;
-    &lt;result column=&quot;gender&quot; jdbcType=&quot;OTHER&quot; property=&quot;gender&quot; /&gt;
-    &lt;result column=&quot;address&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;address&quot; /&gt;
-    &lt;result column=&quot;phone&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;phone&quot; /&gt;
-    &lt;result column=&quot;email&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;email&quot; /&gt;
-  &lt;/resultMap&gt;
-  &lt;sql id=&quot;Base_Column_List&quot;&gt;
-    &lt;!--@mbg.generated--&gt;
-    id, `name`, age, gender, address, phone, email
-  &lt;/sql&gt;
-
-  &lt;insert id=&quot;bigSave&quot;&gt;
-      INSERT INTO students(id, name, age, gender, address, phone, email) VALUES
-          (null, #&#123;student.name&#125;, #&#123;student.age&#125;, #&#123;student.gender&#125;, #&#123;student.address&#125;, #&#123;student.phone&#125;,
-           #&#123;student.email&#125;)
-  &lt;/insert&gt;
-&lt;/mapper&gt;
-</code></pre>
-<p>4.消耗时间</p>
-<p> 一万条数据总耗时：26348ms</p>
-<h3 id="2-2-MyBatis的手动批量提交"><a href="#2-2-MyBatis的手动批量提交" class="headerlink" title="2.2 MyBatis的手动批量提交"></a>2.2 MyBatis的手动批量提交</h3><ol>
-<li><p>service</p>
-<pre><code class="java">@Service
-public class UserService &#123;
- 
-    @Resource
-    private UserMapper userMapper;
- 
-    @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
- 
-    public void InsertUsers()&#123;
-        //关闭自动提交
-        SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        long start = System.currentTimeMillis();
-        for(int i = 0 ;i &lt; 10000; i++) &#123;
-            User user = new User();
-            user.setUsername(&quot;name&quot; + i);
-            user.setPassword(&quot;password&quot; + i);
-            userMapper.insertUsers(user);
-        &#125;
-        sqlSession.commit();
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;一万条数据总耗时：&quot; + (end-start) + &quot;ms&quot; );
-    &#125;
-&#125;
-</code></pre>
-<p>2.消耗时间</p>
-<p><strong>一万条数据总耗时：24516ms</strong></p>
-</li>
-</ol>
-<h3 id="2-3-MyBatis以集合方式批量新增"><a href="#2-3-MyBatis以集合方式批量新增" class="headerlink" title="2.3 MyBatis以集合方式批量新增"></a>2.3 MyBatis以集合方式批量新增</h3><p>1.service</p>
-<pre><code class="java">@Service
-public class UserService &#123;
- 
-    @Resource
-    private UserMapper userMapper;
- 
-    public void InsertUsers()&#123;
-        long start = System.currentTimeMillis();
-        List&lt;User&gt; userList = new ArrayList&lt;&gt;();
-        User user;
-        for(int i = 0 ;i &lt; 10000; i++) &#123;
-            user = new User();
-            user.setUsername(&quot;name&quot; + i);
-            user.setPassword(&quot;password&quot; + i);
-            userList.add(user);
-        &#125;
-        userMapper.insertUsers(userList);
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;一万条数据总耗时：&quot; + (end-start) + &quot;ms&quot; );
-    &#125;
- 
-&#125;
-</code></pre>
-<p>2.mapper</p>
-<pre><code class="java">@Mapper
-public interface UserMapper &#123;
- 
-    Integer insertUsers(List&lt;User&gt; userList);
-&#125;
-</code></pre>
-<p>3.编写xml</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE mapper
-        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;mapper namespace=&quot;com.ithuang.demo.mapper.UserMapper&quot;&gt;
-    &lt;insert id=&quot;insertUsers&quot;&gt;
-        INSERT INTO user (username, password)
-        VALUES
-        &lt;foreach collection =&quot;userList&quot; item=&quot;user&quot; separator =&quot;,&quot;&gt;
-            (#&#123;user.username&#125;, #&#123;user.password&#125;)
-        &lt;/foreach&gt;
-    &lt;/insert&gt;
-&lt;/mapper&gt;
-</code></pre>
-<p>4、消耗时间</p>
-<p><strong>一万条数据总耗时：521ms</strong></p>
-<h3 id="2-4-MyBatis-Plus提供的SaveBatch方法"><a href="#2-4-MyBatis-Plus提供的SaveBatch方法" class="headerlink" title="2.4 MyBatis-Plus提供的SaveBatch方法"></a>2.4 MyBatis-Plus提供的SaveBatch方法</h3><p>1.service</p>
-<pre><code class="java">@Service
-public class UserService extends ServiceImpl&lt;UserMapper, User&gt; implements IService&lt;User&gt; &#123;
- 
-    public void InsertUsers()&#123;
-        long start = System.currentTimeMillis();
-        List&lt;User&gt; userList = new ArrayList&lt;&gt;();
-        User user;
-        for(int i = 0 ;i &lt; 10000; i++) &#123;
-            user = new User();
-            user.setUsername(&quot;name&quot; + i);
-            user.setPassword(&quot;password&quot; + i);
-            userList.add(user);
-        &#125;
-        saveBatch(userList);
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;一万条数据总耗时：&quot; + (end-start) + &quot;ms&quot; );
-    &#125;
-&#125;
-</code></pre>
-<p>2.mapper</p>
-<pre><code class="java">@Mapper
-public interface UserMapper extends BaseMapper&lt;User&gt; &#123;
- 
-&#125;
-</code></pre>
-<p>3.输出结果4674ms</p>
-<h3 id="2-5-MyBatis-Plus提供的InsertBatchSomeColumn方法"><a href="#2-5-MyBatis-Plus提供的InsertBatchSomeColumn方法" class="headerlink" title="2.5 MyBatis-Plus提供的InsertBatchSomeColumn方法"></a>2.5 MyBatis-Plus提供的InsertBatchSomeColumn方法</h3><p>1、编写EasySqlInjector 自定义类</p>
-<pre><code class="java">
-public class EasySqlInjector extends DefaultSqlInjector &#123;
-    @Override
-    public List&lt;AbstractMethod&gt; getMethodList(Class&lt;?&gt; mapperClass, TableInfo tableInfo) &#123;
-        // 注意：此SQL注入器继承了DefaultSqlInjector(默认注入器)，调用了DefaultSqlInjector的getMethodList方法，保留了mybatis-plus的自带方法
-        List&lt;AbstractMethod&gt; methodList = super.getMethodList(mapperClass, tableInfo);
-        methodList.add(new InsertBatchSomeColumn(i -&gt; i.getFieldFill() != FieldFill.UPDATE));
-        return methodList;
-    &#125;
- 
-&#125;
-</code></pre>
-<p>2.定义核心配置类注入此Bean</p>
-<pre><code class="java">@Configuration
-public class MybatisPlusConfig &#123;
- 
-    @Bean
-    public EasySqlInjector sqlInjector() &#123;
-        return new EasySqlInjector();
-    &#125;
-&#125;
-</code></pre>
-<p>3、service</p>
-<pre><code class="java">
-public class UserService&#123;
- 
-    @Resource
-    private UserMapper userMapper;
-    public void InsertUsers()&#123;
-        long start = System.currentTimeMillis();
-        List&lt;User&gt; userList = new ArrayList&lt;&gt;();
-        User user;
-        for(int i = 0 ;i &lt; 10000; i++) &#123;
-            user = new User();
-            user.setUsername(&quot;name&quot; + i);
-            user.setPassword(&quot;password&quot; + i);
-            userList.add(user);
-        &#125;
-        userMapper.insertBatchSomeColumn(userList);
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;一万条数据总耗时：&quot; + (end-start) + &quot;ms&quot; );
-    &#125;
-&#125;
-</code></pre>
-<p>4.输出结果</p>
-<p><strong>一万条数据总耗时：575ms</strong></p>
-<h2 id="3-数据对比"><a href="#3-数据对比" class="headerlink" title="3.数据对比"></a>3.数据对比</h2><table>
-<thead>
-<tr>
-<th align="center">方法</th>
-<th align="center">时间</th>
-<th align="center">推荐</th>
-<th align="center"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">一条一条的插入</td>
-<td align="center">26348ms</td>
-<td align="center">不推荐</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">MyBatis的手动批量提交</td>
-<td align="center">24516ms</td>
-<td align="center">不推荐</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">MyBatis以集合方式批量新增</td>
-<td align="center">521ms</td>
-<td align="center">推荐</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">MyBatis-Plus提供的SaveBatch方法</td>
-<td align="center">4674ms</td>
-<td align="center">不推荐</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">MyBatis-Plus提供的InsertBatchSomeColumn方法</td>
-<td align="center">575ms</td>
-<td align="center">推荐</td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>感谢<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44723773/article/details/128223621">王菜鸟</a>提供资源</p>
-
+            <h1 id="mybatis批量插入"><a href="#mybatis批量插入" class="headerlink" title="mybatis批量插入"></a>mybatis批量插入</h1>
             
         </div>
     </div>
@@ -488,7 +196,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/MySQL/" style="color: #00a596">
+            <a href="/tags/MySQL/" style="color: #00bcd4">
                 MySQL
             </a>
         </span>
@@ -568,7 +276,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/navicat%E6%BF%80%E6%B4%BB/" style="color: #ffa2c4">
+            <a href="/tags/navicat%E6%BF%80%E6%B4%BB/" style="color: #ff7d73">
                 navicat激活
             </a>
         </span>
@@ -608,7 +316,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="color: #03a9f4">
+            <a href="/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="color: #00bcd4">
                 云服务器
             </a>
         </span>
@@ -706,7 +414,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/%E9%9D%A2%E8%AF%95/" style="color: #ff7d73">
+            <a href="/tags/%E9%9D%A2%E8%AF%95/" style="color: #00bcd4">
                 面试
             </a>
         </span>
@@ -795,7 +503,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/MySQL/" style="color: #ff7d73">
+            <a href="/tags/MySQL/" style="color: #00bcd4">
                 MySQL
             </a>
         </span>
@@ -835,7 +543,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/spring/" style="color: #ff7d73">
+            <a href="/tags/spring/" style="color: #00a596">
                 spring
             </a>
         </span>
@@ -875,7 +583,7 @@ public class UserService&#123;
         
         <span class="tag">
             
-            <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="color: #03a9f4">
+            <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="color: #00a596">
                 学习
             </a>
         </span>
