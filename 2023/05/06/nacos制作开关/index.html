@@ -3,7 +3,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
-        <title>使用nacos出现的bug | 张中贵的博客</title>
+        <title>nacos制作开关 | 张中贵的博客</title>
         <meta name="author" content="zzg" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -145,23 +145,14 @@
             <div id="main" v-show="!loading">
                 <div class="article">
     <div>
-        <h1>使用nacos出现的bug</h1>
+        <h1>nacos制作开关</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/4/20
-        </span>
-        
-        <span class="category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                学习
-            </a>
+            2023/5/6
         </span>
         
         
@@ -172,7 +163,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/spring-cloud/" style="color: #ff7d73">spring-cloud</a>
+                <a href="/tags/Spring-Cloud/" style="color: #00a596">Spring Cloud</a>
             </span>
             
         </span>
@@ -180,26 +171,9 @@
     </div>
     
     <div class="content" v-pre>
-        <h1 id="nacos使用出现的问题"><a href="#nacos使用出现的问题" class="headerlink" title="nacos使用出现的问题"></a>nacos使用出现的问题</h1><span id="more"></span>
+        <h1 id="nacos制作开关"><a href="#nacos制作开关" class="headerlink" title="nacos制作开关"></a>nacos制作开关</h1><span id="more"></span>
 
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>我想使用nacos写一个读取配置文件的，并修改配置文件的一个小demo。结果创建项目，启动的时候一直出现bug出现问题也不知道该怎么做，报错内容也一直是读取不到配置文件的信息，我一直以为是我那里写的有问题一直找不着配置文件。</p>
-<pre><code class="txt">Add a spring.config.import=nacos: property to your configuration.
-    If configuration is not required add spring.config.import=optional:nacos: instead.
-    To disable this check, set spring.cloud.nacos.config.import-check.enabled=false.
-</code></pre>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>在百度上面找了半个小时没有找到解决的办法直到将整个问题上传到bing搜索才发现问题的原因，原来<strong>是2021.0.5版本的 Spring Cloud 默认不再启用 bootstrap 包</strong>所以我之前启动一直报错，并不是由于找不到配置文件的原因</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="方法一：将bootstrap-yaml改成application-yaml"><a href="#方法一：将bootstrap-yaml改成application-yaml" class="headerlink" title="方法一：将bootstrap.yaml改成application.yaml"></a>方法一：将bootstrap.yaml改成application.yaml</h2><h2 id="方法二：添加jar包"><a href="#方法二：添加jar包" class="headerlink" title="方法二：添加jar包"></a>方法二：添加jar包</h2><p>新版本添加</p>
-<pre><code class="java">&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-bootstrap&lt;/artifactId&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>旧版本及2.4以下</p>
-<pre><code class="java">    &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-cloud-context&lt;/artifactId&gt;
-    &lt;/dependency&gt;
-</code></pre>
+<p>1.起因之前老大做一个短信发送的开关，我使用的是redis做了一个key，看读取key是true还是false，然后定时开关。后来因为种种原因，他让我使用nacos</p>
 
     </div>
     

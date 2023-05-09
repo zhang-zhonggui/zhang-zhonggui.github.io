@@ -3,7 +3,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
-        <title>使用nacos出现的bug | 张中贵的博客</title>
+        <title>张中贵的博客</title>
         <meta name="author" content="zzg" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -32,9 +32,7 @@
 
 
 
-
-
-
+<script src="/js/lib/home.js"></script>
 
 <link rel="stylesheet" href="/css/main.css" />
 
@@ -143,71 +141,111 @@
 
             <transition name="into">
             <div id="main" v-show="!loading">
-                <div class="article">
-    <div>
-        <h1>使用nacos出现的bug</h1>
+                <div id="home-head">
+    <div
+        id="home-background"
+        ref="homeBackground"
+        data-images="/images/background.jpg"
+    ></div>
+    <div id="home-info" @click="homeClick">
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="info">
+            <div class="wrap">
+                <h1>张中贵的博客</h1>
+                <h3>zzg</h3>
+                <h5></h5>
+            </div>
+        </span>
     </div>
-    <div class="info">
+</div>
+<div id="home-posts-wrap"  ref="homePostsWrap">
+    <div id="home-posts">
+        
+
+<div class="post">
+    <a href="/2023/04/06/hello-world/">
+        <h2 class="post-title">Hello World</h2>
+    </a>
+    <div class="category-and-date">
+        
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/4/20
+            2023/4/6
         </span>
         
-        <span class="category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                学习
-            </a>
-        </span>
-        
-        
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/spring-cloud/" style="color: #ff7d73">spring-cloud</a>
-            </span>
-            
-        </span>
         
     </div>
-    
-    <div class="content" v-pre>
-        <h1 id="nacos使用出现的问题"><a href="#nacos使用出现的问题" class="headerlink" title="nacos使用出现的问题"></a>nacos使用出现的问题</h1><span id="more"></span>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            hello world
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+    </div>
+    <a href="/2023/04/06/hello-world/" class="go-post">阅读全文</a>
+</div>
 
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>我想使用nacos写一个读取配置文件的，并修改配置文件的一个小demo。结果创建项目，启动的时候一直出现bug出现问题也不知道该怎么做，报错内容也一直是读取不到配置文件的信息，我一直以为是我那里写的有问题一直找不着配置文件。</p>
-<pre><code class="txt">Add a spring.config.import=nacos: property to your configuration.
-    If configuration is not required add spring.config.import=optional:nacos: instead.
-    To disable this check, set spring.cloud.nacos.config.import-check.enabled=false.
-</code></pre>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>在百度上面找了半个小时没有找到解决的办法直到将整个问题上传到bing搜索才发现问题的原因，原来<strong>是2021.0.5版本的 Spring Cloud 默认不再启用 bootstrap 包</strong>所以我之前启动一直报错，并不是由于找不到配置文件的原因</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="方法一：将bootstrap-yaml改成application-yaml"><a href="#方法一：将bootstrap-yaml改成application-yaml" class="headerlink" title="方法一：将bootstrap.yaml改成application.yaml"></a>方法一：将bootstrap.yaml改成application.yaml</h2><h2 id="方法二：添加jar包"><a href="#方法二：添加jar包" class="headerlink" title="方法二：添加jar包"></a>方法二：添加jar包</h2><p>新版本添加</p>
-<pre><code class="java">&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-bootstrap&lt;/artifactId&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>旧版本及2.4以下</p>
-<pre><code class="java">    &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-cloud-context&lt;/artifactId&gt;
-    &lt;/dependency&gt;
-</code></pre>
+
+        <div class="page-current">
+    <div class="prev">
+        
+        <a class="page-num" href="/">
+            <i class="fa-solid fa-caret-left fa-fw"></i>
+        </a>
+        
+    </div>
+    <div class="page-index">
+        
+        <span>
+            
+            
+            <a class="page-num" href="/">1</a>
+        </span>
+        
+        <span class="current">2</span>
+        
+    </div>
+    <div class="next">
+        
+    </div>
+</div>
 
     </div>
     
-    
-    
-    
-    
-    
+    <div id="home-card">
+        <div id="card-div">
+    <div class="card-style">
+        <div class="avatar">
+            <img src="/images/avatar.jpg" alt="avatar" />
+        </div>
+        <div class="name">zzg</div>
+        <div class="description">
+            <p>Description<br>…</p>
+
+        </div>
+        
+        
+        <div class="friend-links">
+            
+            <div class="friend-link">
+                <a target="_blank" rel="noopener" href="https://argvchs.netlify.app">Argvchs</a>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+    </div>
     
 </div>
 
@@ -240,12 +278,6 @@
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-
-
-
-
         
     </body>
 </html>
