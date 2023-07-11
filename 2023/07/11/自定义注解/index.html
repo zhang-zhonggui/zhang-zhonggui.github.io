@@ -3,7 +3,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
-        <title>About | 张中贵的博客</title>
+        <title>自定义注解 | 张中贵的博客</title>
         <meta name="author" content="zzg" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -27,6 +27,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -139,132 +143,138 @@
 
             <transition name="into">
             <div id="main" v-show="!loading">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        <span>
-            <a href="/tags/MySQL/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                MySQL
-            </a>
+                <div class="article">
+    <div>
+        <h1>自定义注解</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/7/11
         </span>
         
         
-        
-        <span>
-            <a href="/tags/spring/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                spring
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/spring-boot/" style="color: #00bcd4">spring boot</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/tags/navicat%E6%BF%80%E6%B4%BB/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                navicat激活
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/Redis/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                Redis
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/spring-cloud/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                spring-cloud
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                学习
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E9%9D%A2%E8%AF%95/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                面试
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                云服务器
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/Spring-Cloud/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                Spring Cloud
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/work/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                work
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/spring-boot/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                spring boot
-            </a>
-        </span>
-        
         
     </div>
+    
+    <div class="content" v-pre>
+        <p>自定义注解</p>
+<span id="more"></span>
+
+<h1 id="在-Spring-Boot-中，可以创建自定义注解来简化代码和提高可读性。自定义注解可以帮助我们在应用程序中更好地表达代码的意图和功能。"><a href="#在-Spring-Boot-中，可以创建自定义注解来简化代码和提高可读性。自定义注解可以帮助我们在应用程序中更好地表达代码的意图和功能。" class="headerlink" title="在 Spring Boot 中，可以创建自定义注解来简化代码和提高可读性。自定义注解可以帮助我们在应用程序中更好地表达代码的意图和功能。"></a>在 Spring Boot 中，可以创建自定义注解来简化代码和提高可读性。自定义注解可以帮助我们在应用程序中更好地表达代码的意图和功能。</h1><h2 id="1-首先，需要创建一个注解类。注解类是一个带有-interface-注解的接口。例如，以下是一个简单的自定义注解类："><a href="#1-首先，需要创建一个注解类。注解类是一个带有-interface-注解的接口。例如，以下是一个简单的自定义注解类：" class="headerlink" title="1.首先，需要创建一个注解类。注解类是一个带有 @interface 注解的接口。例如，以下是一个简单的自定义注解类："></a>1.首先，需要创建一个注解类。注解类是一个带有 @interface 注解的接口。例如，以下是一个简单的自定义注解类：</h2><pre><code class="java">@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AuthRole &#123;
+    String value();
+&#125;
+</code></pre>
+<p>@Target表是注解的作用对象</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用范围</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>METHOD</td>
+<td>可以用于方法上</td>
+<td>@Controller</td>
+</tr>
+<tr>
+<td>FIELD</td>
+<td>可以用于字段上</td>
+<td>@NotNull</td>
+</tr>
+<tr>
+<td>PARAMETER</td>
+<td>可以用于方法参数上</td>
+<td>@Transactional</td>
+</tr>
+<tr>
+<td>ANNOTATION_TYPE</td>
+<td>可以用于其他注解类型</td>
+<td>@Controller</td>
+</tr>
+</tbody></table>
+<p>在创建自定义注解时，需要使用 @Retention(RetentionPolicy.RUNTIME) 注解来指定该注解的生命周期。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SOURCE</td>
+<td>注解只在源代码中存在，在编译后就会被丢弃。</td>
+</tr>
+<tr>
+<td>CLASS</td>
+<td>注解在编译后会被保留在字节码中，在运行时无法访问到</td>
+</tr>
+<tr>
+<td>RUNTIME</td>
+<td>注解在运行时可以被访问到，可以通过反射机制获取到注解中的属性值</td>
+</tr>
+<tr>
+<td>ANNOTATION_TYPE</td>
+<td>注解只能用于注解类型上，而不能用于方法或字段上</td>
+</tr>
+</tbody></table>
+<h2 id="2-然后，创建一个切面类，用于拦截带有自定义注解的方法："><a href="#2-然后，创建一个切面类，用于拦截带有自定义注解的方法：" class="headerlink" title="2.然后，创建一个切面类，用于拦截带有自定义注解的方法："></a>2.然后，创建一个切面类，用于拦截带有自定义注解的方法：</h2><pre><code class="java">
+@Component
+@Aspect
+public class AopConfig &#123;
+
+    //声明切面
+    @Pointcut(&quot;@annotation(com.example.elkdemo.annotation.AuthRole)&quot;)
+    public void pointcut() &#123;
+    &#125;
+    
+    @Before(&quot;pointcut()&quot;)
+    public void before(JoinPoint joinPoint) &#123;
+        //获取注解中的内容
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        AuthRole annotation = signature.getMethod().getAnnotation(AuthRole.class);
+        String value = annotation.value();
+        System.out.println(value);
+
+    &#125;
+&#125;
+</code></pre>
+<h2 id="3-使用注解"><a href="#3-使用注解" class="headerlink" title="3.使用注解"></a>3.使用注解</h2><pre><code class="java">@RestController
+@RequestMapping(&quot;test&quot;)
+public class TestController &#123;
+    
+    @AuthRole(value = &quot;test&quot;)
+    @GetMapping(&quot;aop&quot;)
+    public void testAop() &#123;
+        System.out.println(&quot;测试题aop&quot;);
+    &#125;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
     
 </div>
 
@@ -297,6 +307,12 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+
+
+
+
         
     </body>
 </html>
