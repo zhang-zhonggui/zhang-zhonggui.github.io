@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <title>redis做mybatis的缓存 | 张中贵的博客</title>
+        <meta name="author" content="zzg" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+        <link rel="icon" href="/zhang-zhonggui/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.2.47/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.3.0/css/all.min.css" />
+<link rel="stylesheet" href="/zhang-zhonggui/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css"
+/>
+<script src="/zhang-zhonggui/js/lib/highlight.js"></script>
+
+
+
+<script src="/zhang-zhonggui/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/zhang-zhonggui/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <div id="layout">
+            <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/zhang-zhonggui/images/loading.gif" />
+                </div>
+            </div>
+            </transition>
+            <nav id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <div class="desktop-menu">
+        <a class="title" href="/zhang-zhonggui/">
+            <span>张中贵的博客</span>
+        </a>
+        
+        <a href="/zhang-zhonggui/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/zhang-zhonggui/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/zhang-zhonggui/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/zhang-zhonggui/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/zhang-zhonggui/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div id="mobile-menu">
+        <div class="curtain" @click="shouMenuItems = !shouMenuItems" v-show="shouMenuItems"></div>
+        <div class="title" @click="shouMenuItems = !shouMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;张中贵的博客</span>
+        </div>
+        <transition name="slide">
+        <div class="items" v-show="shouMenuItems">
+            
+            <a href="/zhang-zhonggui/">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-house fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                </div>
+            </a>
+            
+            <a href="/zhang-zhonggui/about">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-id-card fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                </div>
+            </a>
+            
+            <a href="/zhang-zhonggui/archives">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-box-archive fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                </div>
+            </a>
+            
+            <a href="/zhang-zhonggui/categories">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-bookmark fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                </div>
+            </a>
+            
+            <a href="/zhang-zhonggui/tags">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                </div>
+            </a>
+            
+        </div>
+        </transition>
+    </div>
+</nav>
+
+            <transition name="into">
+            <div id="main" v-show="!loading">
+                <div class="article">
+    <div>
+        <h1>redis做mybatis的缓存</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/8/16
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/zhang-zhonggui/tags/redis-SpringBoot/" style="color: #ffa2c4">redis SpringBoot</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="redis做mybatis的缓存"><a href="#redis做mybatis的缓存" class="headerlink" title="redis做mybatis的缓存"></a>redis做mybatis的缓存</h1><span id="more"></span>
+
+<p>项目版本</p>
+<p>​				 springboot：3.1.2  </p>
+<p>​				数据库：pgsql：15.3-alpine</p>
+<p>​				redis： 7.0.14</p>
+<h2 id="1-导入相关jar包"><a href="#1-导入相关jar包" class="headerlink" title="1.导入相关jar包"></a>1.导入相关jar包</h2><pre><code class="xml">    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--引入新版本去除漏洞--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.yaml&lt;/groupId&gt;
+            &lt;artifactId&gt;snakeyaml&lt;/artifactId&gt;
+            &lt;version&gt;2.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.baomidou&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;3.5.3.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.xiaoymin&lt;/groupId&gt;
+            &lt;artifactId&gt;knife4j-openapi3-jakarta-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;4.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.fastjson2&lt;/groupId&gt;
+            &lt;artifactId&gt;fastjson2&lt;/artifactId&gt;
+            &lt;version&gt;2.0.38&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.hutool&lt;/groupId&gt;
+            &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;
+            &lt;version&gt;5.8.20&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+</code></pre>
+<h2 id="2-设置配置文件"><a href="#2-设置配置文件" class="headerlink" title="2.设置配置文件"></a>2.设置配置文件</h2><pre><code class="yaml">server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.2.38:5432/test
+    username: root
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: 192.168.2.38
+      password: 123456
+      database: 0
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+mybatis-plus:
+# 配置实体类
+  type-aliases-package: com.example.demo.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启缓存
+    cache-enabled: true
+  mapper-locations: classpath:mapper/*.xml
+
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: &#39;default&#39;
+      paths-to-match: &#39;/**&#39;
+      packages-to-scan: com.example.mybatisrediscache.controller
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+</code></pre>
+<h2 id="3-书写测试接口"><a href="#3-书写测试接口" class="headerlink" title="3.书写测试接口"></a>3.书写测试接口</h2><pre><code class="java">@RestController
+@RequestMapping(&quot;test&quot;)
+@Tag(name = &quot;test&quot;, description = &quot;测试接口&quot;)
+public class TestController &#123;
+    @GetMapping
+    @Schema(description = &quot;测试方法&quot;)
+    public String test() &#123;
+        return &quot;hello world&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="4-书写一个正常的一个查询接口"><a href="#4-书写一个正常的一个查询接口" class="headerlink" title="4.书写一个正常的一个查询接口"></a>4.书写一个正常的一个查询接口</h2><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.example.mybatisrediscache.mapper.UserMapper&quot;&gt;
+  &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.example.mybatisrediscache.domain.User&quot;&gt;
+    &lt;!--@mbg.generated--&gt;
+    &lt;!--@Table &quot;user&quot;--&gt;
+    &lt;id column=&quot;id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;id&quot; /&gt;
+    &lt;result column=&quot;name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;
+    &lt;result column=&quot;age&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;
+    &lt;result column=&quot;address&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;address&quot; /&gt;
+  &lt;/resultMap&gt;
+  &lt;sql id=&quot;Base_Column_List&quot;&gt;
+    &lt;!--@mbg.generated--&gt;
+    id, &quot;name&quot;, age, address
+  &lt;/sql&gt;
+
+  &lt;select id=&quot;selectAllUser&quot; resultMap=&quot;BaseResultMap&quot;&gt;
+      select id, &quot;name&quot;, age, address from &quot;user&quot;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<pre><code class="java">public interface UserMapper extends BaseMapper&lt;User&gt; &#123;
+    List&lt;User&gt; selectAllUser();
+&#125;
+</code></pre>
+<pre><code class="java">@Service
+public class CacheServiceImpl implements CacheService &#123;
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Override
+    public List&lt;User&gt; selectAllUser() &#123;
+        return userMapper.selectAllUser();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="5-Redis使用FastJson序列化"><a href="#5-Redis使用FastJson序列化" class="headerlink" title="5.Redis使用FastJson序列化"></a>5.Redis使用FastJson序列化</h2><pre><code class="java">
+@Configuration
+public class RedisConfig &#123;
+    @Bean(name = &quot;RedisTemplate&quot;)
+    @SuppressWarnings(value = &#123;&quot;unchecked&quot;, &quot;rawtypes&quot;&#125;)
+    public RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory connectionFactory) &#123;
+        RedisTemplate&lt;Object, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(connectionFactory);
+
+        FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
+
+        // 使用StringRedisSerializer来序列化和反序列化redis的key值
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(serializer);
+
+        // Hash的key也采用StringRedisSerializer的序列化方式
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(serializer);
+
+        template.afterPropertiesSet();
+        return template;
+    &#125;
+
+&#125;
+</code></pre>
+<pre><code class="java">public class FastJson2JsonRedisSerializer&lt;T&gt; implements RedisSerializer&lt;T&gt; &#123;
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+
+    private Class&lt;T&gt; clazz;
+
+    public FastJson2JsonRedisSerializer(Class&lt;T&gt; clazz) &#123;
+        super();
+        this.clazz = clazz;
+    &#125;
+
+    @Override
+    public byte[] serialize(T t) throws SerializationException &#123;
+        if (t == null) &#123;
+            return new byte[0];
+        &#125;
+        return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
+    &#125;
+
+    @Override
+    public T deserialize(byte[] bytes) throws SerializationException &#123;
+        if (bytes == null || bytes.length &lt;= 0) &#123;
+            return null;
+        &#125;
+        String str = new String(bytes, DEFAULT_CHARSET);
+
+        return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="6-实现自定义cache"><a href="#6-实现自定义cache" class="headerlink" title="6.实现自定义cache"></a>6.实现自定义cache</h2><pre><code class="java">@Slf4j
+public class MybatisRedisCache implements Cache &#123;
+
+    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
+
+    private static final RedisTemplate&lt;String, Object&gt; REDISTEMPLATE = SpringUtil.getBean(&quot;RedisTemplate&quot;);
+
+    private final String id;
+
+    public MybatisRedisCache(final String id) &#123;
+        if (StringUtils.isBlank(id)) &#123;
+            throw new IllegalArgumentException(&quot;Cache instances require an ID&quot;);
+        &#125;
+        this.id = id;
+    &#125;
+
+
+    @Override
+    public String getId() &#123;
+        return this.id;
+    &#125;
+
+    @Override
+    public void putObject(Object key, Object value) &#123;
+        if (value != null) &#123;
+            log.debug(&quot;保存缓存&quot;);
+            //保存数据并设置其过期时间为1天
+            REDISTEMPLATE.opsForValue().set(key.toString(), value, Duration.ofDays(1));
+        &#125;
+    &#125;
+
+    @Override
+    public Object getObject(Object key) &#123;
+        try &#123;
+            if (key != null) &#123;
+                return REDISTEMPLATE.opsForValue().get(key.toString());
+            &#125;
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;缓存出错 &quot;);
+        &#125;
+        return null;
+    &#125;
+
+    @Override
+    public Object removeObject(Object key) &#123;
+        if (key != null) &#123;
+            log.debug(&quot;清除缓存&quot;);
+            REDISTEMPLATE.delete(key.toString());
+        &#125;
+        return null;
+    &#125;
+
+    @Override
+    public void clear() &#123;
+        log.debug(&quot;清空缓存&quot;);
+        Set&lt;String&gt; keys = REDISTEMPLATE.keys(&quot;*:&quot; + this.id + &quot;*&quot;);
+        if (!CollectionUtils.isEmpty(keys)) &#123;
+            REDISTEMPLATE.delete(keys);
+        &#125;
+    &#125;
+
+    @Override
+    public int getSize() &#123;
+        Long size = REDISTEMPLATE.execute(RedisServerCommands::dbSize);
+        return size != null ? size.intValue() : 0;
+    &#125;
+
+    @Override
+    public ReadWriteLock getReadWriteLock() &#123;
+        return this.readWriteLock;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="7-在mapper中开启二级缓存"><a href="#7-在mapper中开启二级缓存" class="headerlink" title="7.在mapper中开启二级缓存"></a>7.在mapper中开启二级缓存</h2><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.example.mybatisrediscache.mapper.UserMapper&quot;&gt;
+    &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.example.mybatisrediscache.domain.User&quot;&gt;
+        &lt;!--@mbg.generated--&gt;
+        &lt;!--@Table &quot;user&quot;--&gt;
+        &lt;id column=&quot;id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot;/&gt;
+        &lt;result column=&quot;age&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot;/&gt;
+        &lt;result column=&quot;address&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;address&quot;/&gt;
+    &lt;/resultMap&gt;
+    &lt;sql id=&quot;Base_Column_List&quot;&gt;
+        &lt;!--@mbg.generated--&gt;
+        id,
+        &quot;name&quot;,
+        age,
+        address
+    &lt;/sql&gt;
+    &lt;!--开启缓存并指定缓存类--&gt;
+    &lt;cache type=&quot;com.example.mybatisrediscache.cache.MybatisRedisCache&quot;/&gt;
+
+
+    &lt;select id=&quot;selectAllUser&quot; resultMap=&quot;BaseResultMap&quot;&gt;
+        select id, &quot;name&quot;, age, address
+        from &quot;user&quot;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="demo地址-demo"><a href="#demo地址-demo" class="headerlink" title="demo地址 demo"></a>demo地址 <a href="https://gitee.com/zhang-zhonggui/mybatis-redis-cache">demo</a></h2>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 张中贵的博客
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;zzg
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+            </div>
+            </transition>
+            
+            <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+            </transition>
+            
+        </div>
+        <script src="/zhang-zhonggui/js/main.js"></script>
+        
+        
+
+
+
+
+        
+    </body>
+</html>
