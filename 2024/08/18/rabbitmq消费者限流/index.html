@@ -3,7 +3,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>rabbitmq | 温暖的小窝</title>
+    <title>rabbitmq消费者限流 | 温暖的小窝</title>
     <meta name="author" content="z-zg" />
     <meta name="description" content="今天也是美好的一天" />
     <meta name="keywords" content="" />
@@ -163,14 +163,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>rabbitmq</h1>
+        <h1>rabbitmq消费者限流</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/10/19
+            2024/8/18
         </span>
         
         
@@ -182,14 +182,14 @@
             
             <span class="tag">
                 
-                <a href="/tags/rabbitmq/" style="color: #00a596">
+                <a href="/tags/rabbitmq/" style="color: #ff7d73">
                     rabbitmq
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/Spring-Boot/" style="color: #ffa2c4">
+                <a href="/tags/Spring-Boot/" style="color: #03a9f4">
                     Spring Boot
                 </a>
             </span>
@@ -199,61 +199,67 @@
     </div>
     
     <div class="content" v-pre>
-        <h1 id="spring-boot使用rabbitmq"><a href="#spring-boot使用rabbitmq" class="headerlink" title="spring boot使用rabbitmq"></a>spring boot使用rabbitmq</h1><span id="more"></span>
+        <h1 id="rabbitmq结合hutool对消费者进行消费者限流"><a href="#rabbitmq结合hutool对消费者进行消费者限流" class="headerlink" title="rabbitmq结合hutool对消费者进行消费者限流"></a>rabbitmq结合hutool对消费者进行消费者限流</h1><span id="more"></span>
 
-<h2 id="1、导包"><a href="#1、导包" class="headerlink" title="1、导包"></a>1、导包</h2><pre><code class="xml">      &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;
-        &lt;/dependency&gt;
-</code></pre>
-<h2 id="2-、编写配置文件"><a href="#2-、编写配置文件" class="headerlink" title="2 、编写配置文件"></a>2 、编写配置文件</h2><pre><code class="java">spring:
-  rabbitmq:
-    port: 5672
-    username: ribzdefp
-    password: 3RSfYkVr102z7cJmkB2e-_pL-isCwOT4
-    addresses: amqps://ribzdefp:3RSfYkVr102z7cJmkB2e-_pL-isCwOT4@gerbil.rmq.cloudamqp.com/ribzdefp
-</code></pre>
-<h2 id="3、发送与接接受消息"><a href="#3、发送与接接受消息" class="headerlink" title="3、发送与接接受消息"></a>3、发送与接接受消息</h2><h4 id="3-1、发送hello-world-消息"><a href="#3-1、发送hello-world-消息" class="headerlink" title="3.1、发送hello world 消息"></a>3.1、发送hello world 消息</h4><h5 id="3-1-1、编写生产者"><a href="#3-1-1、编写生产者" class="headerlink" title="3.1.1、编写生产者"></a>3.1.1、编写生产者</h5><pre><code class="java">@RestController
-@RequestMapping(&quot;/hello&quot;)
-@Tag(name = &quot;发送hello word消息&quot;)
-public class HelloWord &#123;
-    public static final String SUCCESS = &quot;发送成功&quot;;
-    
-    @Resource
-    private RabbitTemplate rabbitTemplate;
+<h2 id="1-配置RabbitMQ消息监听器容器工厂"><a href="#1-配置RabbitMQ消息监听器容器工厂" class="headerlink" title="1.配置RabbitMQ消息监听器容器工厂"></a>1.配置RabbitMQ消息监听器容器工厂</h2><pre><code class="java">
+@Configuration
+public class RabbitConfig &#123;
+    public static final String MESSAGE_QUEUE = &quot;message_queue&quot;;
 
-    @GetMapping(&quot;hello&quot;)
-    @Operation(description = &quot;发送hello word消息&quot;, summary = &quot;发送hello word消息&quot;)
-    public String send() &#123;
-        rabbitTemplate.convertAndSend(null, &quot;hello&quot;, &quot;zzg&quot;);
-        return SUCCESS;
-    &#125;
-&#125;
-</code></pre>
-<h5 id="3-1-2、编写消费者"><a href="#3-1-2、编写消费者" class="headerlink" title="3.1.2、编写消费者"></a>3.1.2、编写消费者</h5><pre><code class="java">@Configuration
-public class Rabbitmq &#123;
-
-    public static final String QUEUE_NAME = &quot;hello&quot;;
-
-    @Bean
-    public Queue queue() &#123;
-        return new Queue(QUEUE_NAME, false);
-    &#125;
-&#125;
-</code></pre>
-<pre><code class="java">@Service
-public class Hello &#123;
-    //该注解用于配置监听器监听队列“hello”
-    @RabbitListener(queues = &quot;hello&quot;)
     /**
-     * 该方法用于将消息打印到控制台
+     * 配置RabbitMQ消息监听器容器工厂
+     * 该工厂用于创建处理单个消息的监听器容器
+     *
+     * @param connectionFactory RabbitMQ连接工厂，用于建立与RabbitMQ的连接
+     * @return SimpleRabbitListenerContainerFactory实例，配置用于手动确认消息的监听器容器
      */
-    public void msg(String msg) &#123;
-        System.out.println(msg);
+    @Bean
+    public SimpleRabbitListenerContainerFactory singleMessageListenerContainerFactory(ConnectionFactory connectionFactory) &#123;
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL); // 设置手动确认模式，确保消息处理完成后才从队列中移除
+        factory.setPrefetchCount(1); // 每次只拉取一条消息，确保消息不会在消费者中积压
+        return factory;
+    &#125;
+        
+    @Bean
+    public Queue sendMessageQueue() &#123;
+        return new Queue(MESSAGE_QUEUE, true);
     &#125;
 &#125;
 </code></pre>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+<h2 id="2-消费端使用guava的RateLimiter进行限流"><a href="#2-消费端使用guava的RateLimiter进行限流" class="headerlink" title="2.消费端使用guava的RateLimiter进行限流"></a>2.消费端使用guava的RateLimiter进行限流</h2><pre><code class="java">@Component
+@Slf4j
+public class SendMessageConsumer &#123;
+    // 限流器，每秒允许消费1个消息
+    private final RateLimiter rateLimiter = RateLimiter.create(1);
+
+    @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE, containerFactory = &quot;singleMessageListenerContainerFactory&quot;)
+    public void onMessage(Channel channel, String message, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) &#123;
+        try &#123;
+            if (rateLimiter.tryAcquire()) &#123;
+                // 处理消息
+                log.info(&quot;消费成功 message: &#123;&#125;, 消费时间: &#123;&#125;&quot;, message, LocalDateTime.now());
+                // 确认消息
+                channel.basicAck(deliveryTag, false);
+            &#125; else &#123;
+                // 限流，拒绝消息并重新入队
+                channel.basicNack(deliveryTag, false, true);
+            &#125;
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;消息处理异常 message: &#123;&#125;, 错误信息: &#123;&#125;&quot;, message, e.getMessage(), e);
+            try &#123;
+                // 处理失败，拒绝消息并重新入队
+                channel.basicNack(deliveryTag, false, true);
+            &#125; catch (IOException ex) &#123;
+                log.error(&quot;消息拒绝失败 deliveryTag: &#123;&#125;,  错误信息: &#123;&#125;&quot;, deliveryTag, ex.getMessage(), ex);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="3-效果展示"><a href="#3-效果展示" class="headerlink" title="3.效果展示"></a>3.效果展示</h2><p><img src="https://i.p-i.vip/24/20240818-66c1e273b9d46.png"></p>
+
     </div>
     
     
