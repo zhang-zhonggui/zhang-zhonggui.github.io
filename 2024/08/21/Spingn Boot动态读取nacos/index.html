@@ -182,7 +182,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Spring-Boot%EF%BC%8CNacos/" style="color: #03a9f4">
+                <a href="/tags/Spring-Boot%EF%BC%8CNacos/" style="color: #00bcd4">
                     Spring Boot，Nacos
                 </a>
             </span>
@@ -192,10 +192,11 @@
     </div>
     
     <div class="content" v-pre>
-        <h1 id="Spring-Boot读取nacos配置文件"><a href="#Spring-Boot读取nacos配置文件" class="headerlink" title="Spring Boot读取nacos配置文件"></a>Spring Boot读取nacos配置文件</h1><span id="more"></span>
+        <h1 id="Spring-Boot动态读取nacos配置文件"><a href="#Spring-Boot动态读取nacos配置文件" class="headerlink" title="Spring Boot动态读取nacos配置文件"></a>Spring Boot动态读取nacos配置文件</h1><span id="more"></span>
 
-<h2 id="1、默认当前已经可以读取配置nacos配置文件"><a href="#1、默认当前已经可以读取配置nacos配置文件" class="headerlink" title="1、默认当前已经可以读取配置nacos配置文件"></a>1、默认当前已经可以读取配置nacos配置文件</h2><pre><code class="java">@RequestMapping(&quot;/test&quot;)
+<h2 id="1、默认当前已经可以读取配置nacos配置文件修改成动态读取在获取参数类上添加-RefreshScope注解即可"><a href="#1、默认当前已经可以读取配置nacos配置文件修改成动态读取在获取参数类上添加-RefreshScope注解即可" class="headerlink" title="1、默认当前已经可以读取配置nacos配置文件修改成动态读取在获取参数类上添加@RefreshScope注解即可"></a>1、默认当前已经可以读取配置nacos配置文件修改成动态读取在获取参数类上添加@RefreshScope注解即可</h2><pre><code class="java">@RequestMapping(&quot;/test&quot;)
 @RestController
+@RefreshScope
 public class TestController &#123;
 
     @Value(&quot;$&#123;zzg.zzg&#125;&quot;)
@@ -212,7 +213,7 @@ public class TestController &#123;
   zzg: zzg
 </code></pre>
 <p><img src="https://i.p-i.vip/24/20240822-66c6e831ac0a9.png" alt="image-20240822152629365"></p>
-<h2 id="2、修改成动态读取在获取参数类上添加-RefreshScope注解即可"><a href="#2、修改成动态读取在获取参数类上添加-RefreshScope注解即可" class="headerlink" title="2、修改成动态读取在获取参数类上添加@RefreshScope注解即可"></a>2、修改成动态读取在获取参数类上添加@RefreshScope注解即可</h2>
+
     </div>
     
     
