@@ -3,7 +3,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>Categories: Spring | 温暖的小窝</title>
+    <title>boot动态读取nacos | 温暖的小窝</title>
     <meta name="author" content="z-zg" />
     <meta name="description" content="今天也是美好的一天" />
     <meta name="keywords" content="" />
@@ -42,6 +42,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -157,92 +161,69 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/categories/%E9%9D%A2%E8%AF%95/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                面试
-            </a>
+            <div class="article">
+    <div>
+        <h1>boot动态读取nacos</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/8/21
         </span>
         
         
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                学习
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/Spring-Boot%EF%BC%8CNacos/" style="color: #03a9f4">
+                    Spring Boot，Nacos
+                </a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/categories/Spring/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                Spring
-            </a>
-        </span>
-        
-        
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2024/5/31</div>
-            <a href="/2024/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A0%B8%E5%BF%83%E7%BA%BF%E7%A8%8B%E6%95%B0%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%BA%BF%E7%A8%8B%E6%95%B0/">
-                <h3>线程池核心线程数与最大线程数</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/Spring/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        Spring
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/Spring/" style="color: #03a9f4">
-                            Spring
-                        </a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="color: #00bcd4">
-                            线程池
-                        </a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h1 id="Spring-Boot读取nacos配置文件"><a href="#Spring-Boot读取nacos配置文件" class="headerlink" title="Spring Boot读取nacos配置文件"></a>Spring Boot读取nacos配置文件</h1><span id="more"></span>
+
+<h2 id="1、默认当前已经可以读取配置nacos配置文件"><a href="#1、默认当前已经可以读取配置nacos配置文件" class="headerlink" title="1、默认当前已经可以读取配置nacos配置文件"></a>1、默认当前已经可以读取配置nacos配置文件</h2><pre><code class="java">@RequestMapping(&quot;/test&quot;)
+@RestController
+public class TestController &#123;
+
+    @Value(&quot;$&#123;zzg.zzg&#125;&quot;)
+    private String zzg;
+
+    @GetMapping(&quot;/get&quot;)
+    @ResponseBody
+    public String get() &#123;
+        return zzg;
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="yaml">zzg:
+  zzg: zzg
+</code></pre>
+<p><img src="https://i.p-i.vip/24/20240822-66c6e831ac0a9.png" alt="image-20240822152629365"></p>
+<h2 id="2、修改成动态读取在获取参数类上添加-RefreshScope注解即可"><a href="#2、修改成动态读取在获取参数类上添加-RefreshScope注解即可" class="headerlink" title="2、修改成动态读取在获取参数类上添加@RefreshScope注解即可"></a>2、修改成动态读取在获取参数类上添加@RefreshScope注解即可</h2>
     </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
     
 </div>
 
@@ -281,6 +262,29 @@
             document.body.append(document.createRange().createContextualFragment(html));
         }
     </script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="argvchs/giscus-comments"
+    data-repo-id="R_kgDOI_uC-w"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOI_uC-84CUToF"
+    data-mapping="pathname"
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="https://static-argvchs.netlify.app/css/giscus.css"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
     
 </body>
 </html>
