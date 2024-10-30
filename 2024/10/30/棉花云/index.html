@@ -3,7 +3,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>springboot线程池 | 温暖的小窝</title>
+    <title>棉花云 | 温暖的小窝</title>
     <meta name="author" content="z-zg" />
     <meta name="description" content="今天也是美好的一天" />
     <meta name="keywords" content="" />
@@ -163,14 +163,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>springboot线程池</h1>
+        <h1>棉花云</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2024/4/5
+            2024/10/30
         </span>
         
         
@@ -182,8 +182,8 @@
             
             <span class="tag">
                 
-                <a href="/tags/Spring-Boot/" style="color: #ff7d73">
-                    Spring Boot
+                <a href="/tags/%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/" style="color: #ff7d73">
+                    虚拟主机
                 </a>
             </span>
             
@@ -192,63 +192,13 @@
     </div>
     
     <div class="content" v-pre>
-        <p>Spring Boot线程池配置使用</p>
-<span id="more"></span>
+        <h1 id="棉花云"><a href="#棉花云" class="headerlink" title="棉花云"></a>棉花云</h1><span id="more"></span>
 
-<h4 id="1-在yaml中配置"><a href="#1-在yaml中配置" class="headerlink" title="1.在yaml中配置"></a>1.在yaml中配置</h4><pre><code class="java">spring:
-  task:
-    execution:
-      pool:
-        # 核心线程数
-        core-size: 8
-        # 最大线程数
-        max-size: 20
-        # 线程空闲时间
-        queue-capacity: 2000
-        # 线程名
-      thread-name-prefix: cache
-</code></pre>
-<h5 id="2-1在Spring-Boot中使用"><a href="#2-1在Spring-Boot中使用" class="headerlink" title="2.1在Spring Boot中使用"></a>2.1在Spring Boot中使用</h5><pre><code class="java">    public void redisTest() &#123;
-        threadPoolTaskExecutor.execute(() -&gt; &#123;
-                    log.info(&quot;&#123;&#125;线程执行&quot;, Thread.currentThread().getName());
-                &#125;
-        );
-        log.info(&quot;任务执行&quot;);
-    &#125;
-</code></pre>
-<h5 id="3-执行结果"><a href="#3-执行结果" class="headerlink" title="3.执行结果"></a>3.执行结果</h5><p><img src="https://cdn.jsdelivr.net/gh/zhang-zhonggui/blog/image-20240405143112537.png" alt="image-20240405143112537"></p>
-<h4 id="2-使用注解使用"><a href="#2-使用注解使用" class="headerlink" title="2.使用注解使用"></a>2.使用注解使用</h4><h5 id="2-1启动类注解添加-EnableAsync"><a href="#2-1启动类注解添加-EnableAsync" class="headerlink" title="2.1启动类注解添加@EnableAsync"></a>2.1启动类注解添加@EnableAsync</h5><pre><code class="java">@SpringBootApplication
-@EnableCaching
-@MapperScan(&quot;com.example.cache.mapper&quot;)
-@EnableAsync
-public class CacheApplication &#123;
-    public static void main(String[] args) &#123;
-        SpringApplication application = new SpringApplication(CacheApplication.class);
-        application.setApplicationStartup(new BufferingApplicationStartup(2048));
-        application.run(args);
-    &#125;
-&#125;
-</code></pre>
-<h5 id="2-2在方法中添加注解-Async"><a href="#2-2在方法中添加注解-Async" class="headerlink" title="2.2在方法中添加注解@Async"></a>2.2在方法中添加注解@Async</h5><pre><code class="java">    @Async
-    public void poolTest() &#123;
-        try &#123;
-            Thread.sleep(1000);
-        &#125; catch (InterruptedException e) &#123;
-            throw new RuntimeException(e);
-        &#125;
-        log.info(&quot;异步执行&quot;);
-    &#125;
-</code></pre>
-<h5 id="2-3方法调用"><a href="#2-3方法调用" class="headerlink" title="2.3方法调用"></a>2.3方法调用</h5><pre><code class="java">
-    @Resource
-    private TestServiceImpl  testService;
-    public void ThreadPoolTest() &#123;
-        testService.poolTest();
-        log.info(&quot;任务执行&quot;);
-    &#125;
-</code></pre>
-<h5 id="2-4执行结果"><a href="#2-4执行结果" class="headerlink" title="2.4执行结果"></a>2.4执行结果</h5><p><img src="https://cdn.jsdelivr.net/gh/zhang-zhonggui/blog/image-20240405144229229.png"></p>
-
+<p>最近在b站无聊的时候发现应该免费的云虚拟主机“”看着感觉还正常看着加钱也就10元永久主机，就下单了。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/zhang-zhonggui/blog/image-20241030223657351.png" alt="image-20241030223657351"></p>
+<h1 id="先说体验吧"><a href="#先说体验吧" class="headerlink" title="先说体验吧"></a>先说体验吧</h1><p>开始就将它当成一个正常的云虚拟主机，就正常的使用，然后它就告诉我什么叫便宜没好货管理后台立马就登录不上了，提交了工单四天后才给我解决，当初就当了打水漂了使用。</p>
+<h1 id="目前使用"><a href="#目前使用" class="headerlink" title="目前使用"></a>目前使用</h1><p>打算给我的wordpress做一个备份站的吧！不对它保太大的希望，算一个小的必坑指南吧</p>
+<h2 id="如果想用棉花云"><a href="#如果想用棉花云" class="headerlink" title="如果想用棉花云"></a>如果想用<a target="_blank" rel="noopener" href="https://mhidc.yinxinye.me/cart">棉花云</a></h2>
     </div>
     
     
