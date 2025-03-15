@@ -3,7 +3,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>bean的注入方式 | 温暖的小窝</title>
+    <title>修改host访问Google翻译 | 温暖的小窝</title>
     <meta name="author" content="z-zg" />
     <meta name="description" content="今天也是美好的一天" />
     <meta name="keywords" content="" />
@@ -163,14 +163,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>bean的注入方式</h1>
+        <h1>修改host访问Google翻译</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/4/6
+            2025/3/15
         </span>
         
         
@@ -182,8 +182,8 @@
             
             <span class="tag">
                 
-                <a href="/tags/spring/" style="color: #00bcd4">
-                    spring
+                <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="color: #00a596">
+                    学习
                 </a>
             </span>
             
@@ -192,74 +192,22 @@
     </div>
     
     <div class="content" v-pre>
-        <h4 id="Java-Bean-属性注入方式："><a href="#Java-Bean-属性注入方式：" class="headerlink" title="Java Bean 属性注入方式："></a>Java Bean 属性注入方式：</h4><h5 id="1-Set-方法注入："><a href="#1-Set-方法注入：" class="headerlink" title="1.Set 方法注入："></a>1.Set 方法注入：</h5><p>使用特定的 Setter 方法来对 Bean 中的属性值进行注入。</p>
-<pre><code class="java">public class UserBean &#123;
-    private String username;
-    private String password;
-    
-    public UserBean() &#123;&#125;
-    
-    public void setUsername(String username) &#123;
-        this.username = username;
-    &#125;
-    
-    public void setPassword(String password) &#123;
-        this.password = password;
-    &#125;
-    
-    // getter 方法省略
-    
-&#125;
-</code></pre>
-<p>在使用该 Bean 时，可以通过调用对应的 Setter 方法来注入属性值：</p>
-<pre><code class="java">UserBean user = new UserBean();
-user.setUsername(&quot;admin&quot;);
-user.setPassword(&quot;123456&quot;);
-</code></pre>
-<h5 id="2-构造方法注入"><a href="#2-构造方法注入" class="headerlink" title="2.构造方法注入"></a>2.构造方法注入</h5><p>使用 Bean 的构造方法对属性值进行注入。</p>
-<pre><code>public class UserBean &#123;
-    private String username;
-    private String password;
-    
-    public UserBean(String username, String password) &#123;
-        this.username = username;
-        this.password = password;
-    &#125;
-    
-    // getter 方法省略
-    
-&#125;
-</code></pre>
-<p>在使用该 Bean 时，可以通过调用带有参数的构造方法来注入属性值：</p>
-<pre><code class="java">UserBean user = new UserBean(&quot;admin&quot;, &quot;123456&quot;);
-</code></pre>
-<h5 id="3-注解注入"><a href="#3-注解注入" class="headerlink" title="3.注解注入"></a>3.注解注入</h5><ol>
-<li>使用注解对 Bean 中的属性进行注入，常见的注解包括 @Autowired、@Inject 等。示例代码如下：</li>
-</ol>
-<pre><code>public class UserBean &#123;
-    @Autowired
-    private UserService userService;
-    
-    // Setter、Getter 方法省略
-    
-&#125;
-</code></pre>
-<ol start="2">
-<li>在使用该 Bean 时，可以使用 Spring 容器注入 UserService 的实例对象来自动对 UserBean 中的 userService 进行注入：</li>
-</ol>
-<pre><code class="java">@Component
-public class UserService &#123;
-    // 相关方法和属性省略
-&#125;
+        <h1 id="修改host访问Google翻译"><a href="#修改host访问Google翻译" class="headerlink" title="修改host访问Google翻译"></a>修改host访问Google翻译</h1><span id="more"></span>
 
-@Component
-public class UserController &#123;
-    @Autowired
-    private UserService userService;
-    
-    // 相关方法省略
-&#125;
+<p>目前国内使用Google翻译由于Google的种种原因不能使用了，所有需要进行host修改才能进行正常的访问！但最近的几个月Google应该是修改了策略，导致目前的ip是动态的！大概修改了过了一天就会失效，这里提供的一下国内可以长期使用的ip，ip的地址是指向阿里云的，大概是阿里内部的进行的代理吧，这里感谢哪些默默做代理的人员。</p>
+<h2 id="host配置"><a href="#host配置" class="headerlink" title="host配置"></a>host配置</h2><pre><code class="html">121.43.186.252 translate.google.com
+121.43.186.252 translate.googleapis.com
+121.43.186.252 translate-pa.googleapis.com
+121.43.186.252 jnn-pa.googleapis.com
 </code></pre>
+<h2 id="其他可用ip"><a href="#其他可用ip" class="headerlink" title="其他可用ip"></a>其他可用ip</h2><p>121.43.186.252 浙江 杭州 </p>
+<p>121.43.177.34   浙江 杭州</p>
+<p>47.103.34.63     上海 上海</p>
+<p>47.103.46.164   上海 上海</p>
+<p>47.113.110.152 广东 深圳</p>
+<p>120.79.149.13   广东 深圳</p>
+<p>39.101.73.57      北京 北京</p>
+<p><font color=red><strong>注：本人使用了大概四个月目前无任何问题</strong></font></p>
 
     </div>
     
